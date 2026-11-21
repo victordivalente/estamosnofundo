@@ -28,6 +28,12 @@
       line-height: 0.9;
       letter-spacing: -0.04em;
       color: #111;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    #answer:hover,
+    #answer:focus-visible {
+      opacity: 0.75;
     }
     .credit {
       font-family: "Times New Roman", Times, serif;
@@ -60,7 +66,7 @@
   </style>
 </head>
 <body>
-  <p id="answer">NÃO</p>
+  <a id="answer" href="https://www.tradingview.com/chart/?symbol=BITSTAMP:BTCUSD" target="_blank" rel="noopener" title="Gráfico do Bitcoin no TradingView">NÃO</a>
   <p class="credit">Um Oferecimento De<br><a href="https://www.opensourcelaw.com.br" aria-label="Open-Source Law+"><img src="assets/osl-logo.png" alt="Open-Source Law+" width="90" height="90"></a></p>
   <script>
     fetch("data/latest.json", { cache: "no-store" })
