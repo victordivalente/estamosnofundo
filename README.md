@@ -1,6 +1,6 @@
 # Estamos No Fundo?
 
-Página estática no espírito de [isthisthebottom.com](https://isthisthebottom.com): a face pública mostra só **SIM** ou **NÃO** e o crédito «Um Oferecimento De» com o logotipo da [Open-Source Law+](https://www.opensourcelaw.com.br). Os indicadores clássicos do Bitcoin rodam em `scripts/build.py` e ficam em `data/latest.json`, não na página.
+Página estática que mostra só **SIM** ou **NÃO** e o crédito «Um Oferecimento De» com o logotipo da [Open-Source Law+](https://www.opensourcelaw.com.br). Os indicadores clássicos do Bitcoin rodam em `scripts/build.py` e ficam em `data/latest.json`, não na página.
 
 Site: https://victordivalente.github.io/estamosnofundo/
 
