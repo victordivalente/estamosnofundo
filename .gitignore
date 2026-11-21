@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+_site/
+.DS_Store
+PROPOSTA.md
+dns/

@@ -1,0 +1,218 @@
+{
+  "generated_at": "2026-11-21T00:10:35-03:00",
+  "as_of": "2026-11-20",
+  "timezone_note": "generated_at está em America/Sao_Paulo (UTC-3). as_of é a data UTC da última observação diária da CoinMetrics.",
+  "answer": "NÃO",
+  "rule": {
+    "sim_requires_fundo_share": 0.7,
+    "sim_requires_fundo_count": 5,
+    "min_indicators_or_default_nao": 6,
+    "need_this_run": 8,
+    "reasons": [
+      "3 de 11 indicadores na zona de fundo; a regra exige pelo menos 8"
+    ],
+    "text": "SIM somente se pelo menos 70% dos indicadores calculados com sucesso estiverem na zona de fundo e esse número for no mínimo 5. Se menos de 6 indicadores forem calculados, a resposta é NÃO."
+  },
+  "summary": {
+    "fundo": 3,
+    "neutro": 8,
+    "topo": 0,
+    "ok": 11,
+    "failed": 0,
+    "failed_ids": []
+  },
+  "price": {
+    "usd": 58851.02,
+    "date": "2026-11-20",
+    "source": "CoinMetrics community API, métrica PriceUSD (fim do dia UTC)",
+    "ath_usd": 124824.45,
+    "ath_date": "2025-10-06",
+    "n_days": 5970
+  },
+  "indicators": [
+    {
+      "id": "mvrv_z",
+      "name": "MVRV Z-Score",
+      "value": 0.1809,
+      "display": "0.18",
+      "zone": "neutro",
+      "thresholds": "fundo ≤ 0; neutro entre 0 e 7; topo ≥ 7",
+      "formula": "(valor de mercado − valor realizado) / desvio padrão populacional do valor de mercado, na série diária completa",
+      "source": "CoinMetrics community API (CapMrktCurUSD, CapMVRVCur). Valor realizado = market cap / MVRV.",
+      "unit": null,
+      "error": null,
+      "extra": {
+        "mvrv": 1.1049,
+        "realized_price_usd": 53262.04
+      }
+    },
+    {
+      "id": "nupl",
+      "name": "NUPL",
+      "value": 0.095,
+      "display": "0.095",
+      "zone": "neutro",
+      "thresholds": "fundo < 0 (capitulação); neutro de 0 a 0,75; topo ≥ 0,75 (euforia)",
+      "formula": "(valor de mercado − valor realizado) / valor de mercado = 1 − 1/MVRV",
+      "source": "CoinMetrics community API (CapMVRVCur)",
+      "unit": null,
+      "error": null
+    },
+    {
+      "id": "pi_cycle",
+      "name": "Pi Cycle (topo e fundo)",
+      "value": 0.5093,
+      "display": "sem cruzamento",
+      "zone": "neutro",
+      "thresholds": "topo se 111-SMA ≥ 2 × 350-SMA; fundo se 150-EMA < 0,745 × 471-SMA; senão neutro",
+      "formula": "Topo (Philip Swift, 2019): 111-SMA vs 2×350-SMA. Fundo (Dončić, 2021): 150-EMA vs 0,745×471-SMA. EMA com semente SMA.",
+      "source": "Calculado sobre PriceUSD da CoinMetrics community API",
+      "unit": null,
+      "error": null,
+      "extra": {
+        "sma_111": 76313.96,
+        "sma_350_x2": 149848.68,
+        "ratio_top": 0.5093,
+        "ema_150": 75076.23,
+        "sma_471_x0745": 62279.03,
+        "ratio_bottom": 1.2055,
+        "top_signal": false,
+        "bottom_signal": false
+      }
+    },
+    {
+      "id": "ma_200w",
+      "name": "Média móvel de 200 semanas",
+      "value": 0.8636,
+      "display": "preço / MM200s = 0.86",
+      "zone": "fundo",
+      "thresholds": "fundo se preço ≤ MM200s; neutro até 3×; topo se preço ≥ 3 × MM200s",
+      "formula": "SMA de 200 fechamentos semanais (semana UTC terminada no domingo). Razão = preço do último dia / MM200s.",
+      "source": "Calculado sobre PriceUSD da CoinMetrics community API",
+      "unit": null,
+      "error": null,
+      "extra": {
+        "ma_200w_usd": 68147.76,
+        "weeks": 854
+      }
+    },
+    {
+      "id": "mayer",
+      "name": "Mayer Multiple",
+      "value": 0.8115,
+      "display": "0.81",
+      "zone": "fundo",
+      "thresholds": "fundo < 1,0; neutro de 1,0 a 2,4; topo ≥ 2,4",
+      "formula": "preço / SMA de 200 dias",
+      "source": "Calculado sobre PriceUSD da CoinMetrics community API",
+      "unit": null,
+      "error": null,
+      "extra": {
+        "sma_200_usd": 72524.49
+      }
+    },
+    {
+      "id": "puell",
+      "name": "Puell Multiple",
+      "value": 0.9014,
+      "display": "0.90",
+      "zone": "neutro",
+      "thresholds": "fundo ≤ 0,5; neutro entre 0,5 e 4; topo ≥ 4",
+      "formula": "último dia de receita dos mineradores / SMA de 365 dias da mesma série",
+      "source": "blockchain.info charts API, miners-revenue (subsídio + taxas, USD)",
+      "unit": null,
+      "error": null,
+      "extra": {
+        "as_of": "2026-11-20",
+        "daily_usd": 32683805.93
+      }
+    },
+    {
+      "id": "log_regression",
+      "name": "Regressão logarítmica",
+      "value": -1.3142,
+      "display": "z residual = -1.31",
+      "zone": "neutro",
+      "thresholds": "fundo se z ≤ −1,5; neutro entre −1,5 e 2,0; topo se z ≥ 2,0",
+      "formula": "ajuste log10(preço) = a · log10(dias desde 2009-01-03) + b, por mínimos quadrados na série completa com preço > 0. z = resíduo / desvio padrão populacional dos resíduos.",
+      "source": "Calculado sobre PriceUSD da CoinMetrics community API. Não é o gráfico Rainbow do BlockchainCenter (coeficientes próprios).",
+      "unit": null,
+      "error": null,
+      "extra": {
+        "a": 5.632105,
+        "b": -16.320616,
+        "fitted_usd": 146344.51,
+        "price_over_fitted": 0.4021
+      }
+    },
+    {
+      "id": "rsi_weekly",
+      "name": "RSI semanal (14)",
+      "value": 33.85,
+      "display": "33.9",
+      "zone": "neutro",
+      "thresholds": "fundo ≤ 30; neutro entre 30 e 70; topo ≥ 70",
+      "formula": "RSI de Wilder (14) sobre os fechamentos semanais (semana UTC terminada no domingo)",
+      "source": "Calculado sobre PriceUSD da CoinMetrics community API",
+      "unit": null,
+      "error": null,
+      "extra": {
+        "week_ending": "2026-11-22",
+        "weekly_close_usd": 58851.02
+      }
+    },
+    {
+      "id": "fear_greed",
+      "name": "Fear & Greed",
+      "value": 12,
+      "display": "12 (Extreme Fear)",
+      "zone": "fundo",
+      "thresholds": "fundo ≤ 24 (medo extremo); neutro de 25 a 74; topo ≥ 75 (ganância extrema)",
+      "formula": "valor publicado pelo Alternative.me Crypto Fear & Greed Index (0–100)",
+      "source": "https://api.alternative.me/fng/ (sem chave)",
+      "unit": null,
+      "error": null,
+      "extra": {
+        "classification": "Extreme Fear",
+        "as_of": "2026-11-21"
+      }
+    },
+    {
+      "id": "drawdown_ath",
+      "name": "Drawdown desde o ATH",
+      "value": -0.5285,
+      "display": "-52.9%",
+      "zone": "neutro",
+      "thresholds": "fundo ≤ −70%; neutro entre −70% e −20%; topo > −20%",
+      "formula": "preço atual / máxima histórica da série − 1",
+      "source": "Máxima e preço atual sobre PriceUSD da CoinMetrics community API",
+      "unit": null,
+      "error": null,
+      "extra": {
+        "ath_usd": 124824.45,
+        "ath_date": "2025-10-06"
+      }
+    },
+    {
+      "id": "hash_ribbons",
+      "name": "Hash Ribbons",
+      "value": 1.005,
+      "display": "sem capitulação",
+      "zone": "neutro",
+      "thresholds": "fundo se SMA-30 do hashrate < SMA-60 (capitulação) ou se houve cruzamento de recuperação nos últimos 42 dias; caso contrário neutro. Este indicador não vota topo.",
+      "formula": "Hash Ribbons (Charles Edwards): SMA 30 vs SMA 60 do hashrate diário. Sinal de compra clássico = cruzamento da 30 para cima da 60 após capitulação.",
+      "source": "CoinMetrics community API (HashRate, TH/s)",
+      "unit": null,
+      "error": null,
+      "extra": {
+        "ma30": 1007254121.84,
+        "ma60": 1002195570.21,
+        "capitulation": false,
+        "recovery_cross_42d": false,
+        "as_of": "2026-11-20"
+      }
+    }
+  ],
+  "sanity_flags": [],
+  "disclaimer": "Conteúdo educacional. Não é recomendação de investimento nem opinião legal."
+}

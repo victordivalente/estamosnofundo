@@ -1,0 +1,58 @@
+name: Build and deploy Pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # 09:00 UTC — 06:00 in America/Sao_Paulo (UTC-3)
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build indicators
+        run: python scripts/build.py
+
+      - name: Assemble Pages artifact
+        run: |
+          mkdir -p _site/assets _site/data
+          cp index.html _site/
+          cp assets/osl-logo.png _site/assets/
+          cp data/latest.json _site/data/
+          # Keep PROPOSTA.md, README, scripts and dns/ out of the published site.
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estamos No Fundo?</title>
+  <meta name="description" content="Estamos No Fundo?">
+  <style>
+    :root { color-scheme: light; }
+    * { margin: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fff;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      text-align: center;
+      padding: 2rem 1.25rem 3.5rem;
+    }
+    #answer {
+      font-weight: 700;
+      font-size: clamp(4.5rem, 18vw, 9rem);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      color: #111;
+    }
+    .credit {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1rem;
+      margin-top: 3.25rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+    }
+    .credit a {
+      color: #111;
+      text-decoration: none;
+      border-bottom: 1px solid #111;
+    }
+    .credit a:hover,
+    .credit a:focus-visible {
+      border-bottom-width: 2px;
+    }
+    .note {
+      position: fixed;
+      bottom: 0.8rem;
+      left: 0;
+      right: 0;
+      font-size: 0.7rem;
+      line-height: 1.3;
+      color: #8a8a8a;
+      padding: 0 1rem;
+    }
+    .credit img { display:block; margin:0.75rem auto 0; border-radius:50%; }
+    .credit a { border-bottom: none !important; }
+  </style>
+</head>
+<body>
+  <p id="answer">NÃO</p>
+  <p class="credit">Um Oferecimento De<br><a href="https://www.opensourcelaw.com.br" aria-label="Open-Source Law+"><img src="assets/osl-logo.png" alt="Open-Source Law+" width="140" height="140"></a></p>
+  <script>
+    fetch("data/latest.json", { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || !d.answer) return;
+        document.getElementById("answer").textContent = d.answer;
+      })
+      .catch(function () {});
+  </script>
+</body>
+</html>
