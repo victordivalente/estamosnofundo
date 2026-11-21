@@ -36,7 +36,7 @@ jobs:
       - name: Assemble Pages artifact
         run: |
           mkdir -p _site/assets _site/data
-          cp index.html _site/
+          cp index.html metodologia.html _site/
           cp assets/osl-logo.png assets/favicon.svg _site/assets/
           cp data/latest.json _site/data/
           # Keep PROPOSTA.md, README, scripts and dns/ out of the published site.

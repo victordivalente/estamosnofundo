@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <title>Metodologia · Estamos No Fundo?</title>
+  <meta name="description" content="Como o Estamos No Fundo? calcula o SIM ou o NÃO a partir de 11 indicadores.">
+  <style>
+    :root { color-scheme: light; }
+    * { margin: 0; box-sizing: border-box; }
+    html { height: 100%; }
+    body {
+      font-family: "Times New Roman", Times, serif;
+      background: #fff;
+      color: #111;
+      line-height: 1.65;
+      font-size: 1.0625rem;
+      padding: 1.75rem 1.25rem 6rem;
+    }
+    .wrap {
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+    a {
+      color: #111;
+      text-underline-offset: 0.15em;
+    }
+    .back {
+      font-size: 0.95rem;
+      margin-bottom: 2.25rem;
+    }
+    .back a { text-decoration: none; border-bottom: 1px solid #111; }
+    .back a:hover,
+    .back a:focus-visible { border-bottom-width: 2px; }
+    h1 {
+      font-weight: 400;
+      font-size: clamp(2rem, 8vw, 2.75rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+    }
+    .lead {
+      font-size: 1.15rem;
+      margin-bottom: 2.5rem;
+    }
+    h2 {
+      font-weight: 400;
+      font-size: 1.45rem;
+      letter-spacing: -0.01em;
+      margin: 2.5rem 0 0.85rem;
+      padding-top: 0.4rem;
+    }
+    h3 {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin: 0 0 0.4rem;
+    }
+    p, ul { margin-bottom: 0.9rem; }
+    ul { padding-left: 1.2rem; }
+    li { margin-bottom: 0.35rem; }
+    .indicator {
+      padding: 1.15rem 0 0.35rem;
+      border-top: 1px solid #e6e6e6;
+    }
+    .indicator:first-of-type { border-top: 0; padding-top: 0.2rem; }
+    .meta {
+      font-size: 0.95rem;
+      color: #333;
+    }
+    .meta span {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .muted { color: #555; font-size: 0.95rem; }
+    #leitura[hidden] { display: none; }
+    .leitura-item {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 0.2rem 1rem;
+      align-items: baseline;
+      padding: 0.45rem 0;
+      border-top: 1px solid #eee;
+      font-size: 1rem;
+    }
+    .leitura-item:first-of-type { border-top: 0; }
+    .leitura-item .valor { text-align: right; }
+    .leitura-item .zona { min-width: 4.5rem; text-align: right; }
+    @media (max-width: 400px) {
+      .leitura-item {
+        grid-template-columns: 1fr auto;
+      }
+      .leitura-item .valor {
+        grid-column: 1 / -1;
+        text-align: left;
+        color: #333;
+        font-size: 0.95rem;
+      }
+    }
+    .credit {
+      font-family: "Times New Roman", Times, serif;
+      margin-top: 3.25rem;
+      font-size: 1.3rem;
+      letter-spacing: 0.01em;
+      text-align: center;
+    }
+    .credit a { color: #111; text-decoration: none; border-bottom: none; }
+    .credit img { display: block; margin: 0.75rem auto 0; border-radius: 50%; }
+    .cvv {
+      position: fixed;
+      bottom: 0.85rem;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
+      color: #8a8a8a;
+      padding: 0 1rem;
+      line-height: 1.3;
+      z-index: 1;
+    }
+    .cvv a {
+      color: #8a8a8a;
+      text-decoration: none;
+    }
+    .cvv a:hover,
+    .cvv a:focus-visible {
+      color: #111;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="back"><a href="./">← voltar</a></p>
+    <h1>Metodologia</h1>
+    <p class="lead">Como o Estamos No Fundo? chega ao SIM ou ao NÃO.</p>
+
+    <h2>O que o site responde</h2>
+    <p>A página inicial mostra apenas uma palavra: <strong>SIM</strong> ou <strong>NÃO</strong>, em resposta à pergunta “Estamos no fundo?”. Essa resposta resume, em um corte binário, a leitura de onze indicadores clássicos de ciclo do Bitcoin, calculados a partir de séries públicas, sem chave de API.</p>
+    <p>O clique na resposta abre esta página, que descreve a regra, cada indicador e a leitura mais recente quando os dados estão disponíveis. O <a href="https://www.tradingview.com/chart/?symbol=BITSTAMP:BTCUSD" target="_blank" rel="noopener">gráfico do Bitcoin no TradingView</a> permanece acessível aqui.</p>
+
+    <h2>A regra</h2>
+    <p>Entram na conta somente os indicadores calculados com sucesso. A resposta é <strong>SIM</strong> só se pelo menos 70% deles estiverem na zona de fundo e esse número for no mínimo 5. Se menos de 6 indicadores forem calculados, a resposta é <strong>NÃO</strong>.</p>
+    <p>Na prática, o mínimo exigido em cada atualização é o maior entre 5 e 70% dos indicadores calculados, com esse percentual arredondado para cima. Com os 11 indicadores disponíveis, por exemplo, são necessários 8 na zona de fundo para haver SIM. Na dúvida, ou quando faltam dados, a resposta permanece NÃO.</p>
+
+    <h2>Quando os dados são atualizados</h2>
+    <p>Os indicadores são recalculados todos os dias às 6h de Brasília por um fluxo do GitHub Actions (9h UTC). O mesmo cálculo também roda quando o código do site é publicado. A data de referência (<span lang="en">as_of</span>) é o dia UTC da última observação diária de preço na CoinMetrics. O horário de geração é registrado em America/Sao_Paulo (UTC−3).</p>
+
+    <h2>Os 11 indicadores</h2>
+    <p class="muted">Para cada um, o site classifica o valor corrente em zona de fundo, zona neutra ou zona de topo, com os limiares abaixo. As fórmulas e as fontes são as usadas no cálculo publicado.</p>
+
+    <article class="indicator">
+      <h3>1. MVRV Z-Score</h3>
+      <p>Compara o valor de mercado do Bitcoin com o valor realizado — o valor de mercado dividido pelo MVRV —, e expressa essa diferença em desvios padrão do valor de mercado na série diária completa.</p>
+      <p class="meta">
+        <span>Fórmula: (valor de mercado − valor realizado) / desvio padrão populacional do valor de mercado, na série diária completa.</span>
+        <span>Zonas: fundo ≤ 0; neutro entre 0 e 7; topo ≥ 7.</span>
+        <span>Fonte: CoinMetrics community API (CapMrktCurUSD, CapMVRVCur). Valor realizado = market cap / MVRV.</span>
+      </p>
+    </article>
+
+    <article class="indicator">
+      <h3>2. NUPL</h3>
+      <p>Estima o lucro ou o prejuízo não realizado dos detentores: a diferença entre o valor de mercado e o valor realizado, dividida pelo valor de mercado.</p>
+      <p class="meta">
+        <span>Fórmula: (valor de mercado − valor realizado) / valor de mercado = 1 − 1/MVRV.</span>
+        <span>Zonas: fundo &lt; 0 (capitulação); neutro de 0 a 0,75; topo ≥ 0,75 (euforia).</span>
+        <span>Fonte: CoinMetrics community API (CapMVRVCur).</span>
+      </p>
+    </article>
+
+    <article class="indicator">
+      <h3>3. Pi Cycle (topo e fundo)</h3>
+      <p>Observa cruzamentos entre médias móveis longas do preço diário. O recorte de topo segue Philip Swift (2019); o de fundo, Dončić (2021). A média exponencial de 150 dias é iniciada com uma média simples.</p>
+      <p class="meta">
+        <span>Fórmula: topo se 111-SMA ≥ 2 × 350-SMA; fundo se 150-EMA &lt; 0,745 × 471-SMA; senão neutro.</span>
+        <span>Zonas: as mesmas da fórmula acima (não há faixa intermediária além de “sem cruzamento”).</span>
+        <span>Fonte: calculado sobre PriceUSD da CoinMetrics community API.</span>
+      </p>
+    </article>
+
+    <article class="indicator">
+      <h3>4. Média móvel de 200 semanas</h3>
+      <p>Compara o preço à média simples de 200 fechamentos semanais, um recorte longo do nível de preço. A semana é a semana UTC que termina no domingo.</p>
+      <p class="meta">
+        <span>Fórmula: SMA de 200 fechamentos semanais. Razão = preço do último dia / MM200s.</span>
+        <span>Zonas: fundo se preço ≤ MM200s; neutro até 3×; topo se preço ≥ 3 × MM200s.</span>
+        <span>Fonte: calculado sobre PriceUSD da CoinMetrics community API.</span>
+      </p>
+    </article>
+
+    <article class="indicator">
+      <h3>5. Mayer Multiple</h3>
+      <p>Relaciona o preço à sua média simples de 200 dias.</p>
+      <p class="meta">
+        <span>Fórmula: preço / SMA de 200 dias.</span>
+        <span>Zonas: fundo &lt; 1,0; neutro de 1,0 a 2,4; topo ≥ 2,4.</span>
+        <span>Fonte: calculado sobre PriceUSD da CoinMetrics community API.</span>
+      </p>
+    </article>
+
+    <article class="indicator">
+      <h3>6. Puell Multiple</h3>
+      <p>Relaciona a receita diária dos mineradores, em dólares, à média dessa mesma série nos 365 dias anteriores.</p>
+      <p class="meta">
+        <span>Fórmula: último dia de receita dos mineradores / SMA de 365 dias da mesma série.</span>
+        <span>Zonas: fundo ≤ 0,5; neutro entre 0,5 e 4; topo ≥ 4.</span>
+        <span>Fonte: de preferência, blockchain.info charts API, série miners-revenue (subsídio + taxas, em USD). Se essa série não responder, o cálculo usa IssTotUSD da CoinMetrics community API (somente o subsídio, sem taxas).</span>
+      </p>
+    </article>
+
+    <article class="indicator">
+      <h3>7. Regressão logarítmica</h3>
+      <p>Mede o quanto o preço se desvia de uma tendência log-log ajustada aos dias decorridos desde 3 de janeiro de 2009, data do bloco gênese. Os coeficientes são próprios desta implementação; não são os do gráfico Rainbow do BlockchainCenter.</p>
+      <p class="meta">
+        <span>Fórmula: ajuste log10(preço) = a · log10(dias desde 2009-01-03) + b, por mínimos quadrados na série completa com preço &gt; 0. z = resíduo / desvio padrão populacional dos resíduos.</span>
+        <span>Zonas: fundo se z ≤ −1,5; neutro entre −1,5 e 2,0; topo se z ≥ 2,0.</span>
+        <span>Fonte: calculado sobre PriceUSD da CoinMetrics community API.</span>
+      </p>
+    </article>
+
+    <article class="indicator">
+      <h3>8. RSI semanal (14)</h3>
+      <p>Aplica o índice de força relativa de Wilder, com período 14, aos fechamentos semanais do preço (semana UTC terminada no domingo).</p>
+      <p class="meta">
+        <span>Fórmula: RSI de Wilder (14) sobre os fechamentos semanais.</span>
+        <span>Zonas: fundo ≤ 30; neutro entre 30 e 70; topo ≥ 70.</span>
+        <span>Fonte: calculado sobre PriceUSD da CoinMetrics community API.</span>
+      </p>
+    </article>
+
+    <article class="indicator">
+      <h3>9. Fear &amp; Greed</h3>
+      <p>Usa o índice de sentimento de 0 a 100 publicado pela Alternative.me (Crypto Fear &amp; Greed Index), sem recálculo próprio.</p>
+      <p class="meta">
+        <span>Fórmula: valor publicado pelo Alternative.me Crypto Fear &amp; Greed Index (0–100).</span>
+        <span>Zonas: fundo ≤ 24 (medo extremo); neutro de 25 a 74; topo ≥ 75 (ganância extrema).</span>
+        <span>Fonte: https://api.alternative.me/fng/ (sem chave).</span>
+      </p>
+    </article>
+
+    <article class="indicator">
+      <h3>10. Drawdown desde o ATH</h3>
+      <p>Mede a queda percentual do preço em relação à máxima histórica da série utilizada.</p>
+      <p class="meta">
+        <span>Fórmula: preço atual / máxima histórica da série − 1.</span>
+        <span>Zonas: fundo ≤ −70%; neutro entre −70% e −20%; topo &gt; −20%.</span>
+        <span>Fonte: máxima e preço atual sobre PriceUSD da CoinMetrics community API.</span>
+      </p>
+    </article>
+
+    <article class="indicator">
+      <h3>11. Hash Ribbons</h3>
+      <p>Compara as médias móveis de 30 e 60 dias do hashrate diário da rede, no recorte descrito por Charles Edwards. Este indicador só classifica fundo ou neutro; não vota topo.</p>
+      <p class="meta">
+        <span>Fórmula: SMA 30 versus SMA 60 do hashrate diário. Fundo se a SMA-30 estiver abaixo da SMA-60 (capitulação) ou se houver cruzamento de recuperação — a média de 30 dias cruzando para cima da de 60, após capitulação — nos últimos 42 dias; caso contrário, neutro.</span>
+        <span>Zonas: fundo na capitulação ou no cruzamento recente; senão neutro. Não há zona de topo.</span>
+        <span>Fonte: CoinMetrics community API (HashRate, TH/s).</span>
+      </p>
+    </article>
+
+    <section id="leitura" hidden>
+      <h2>Leitura atual</h2>
+      <p id="leitura-meta" class="muted"></p>
+      <div id="leitura-lista"></div>
+    </section>
+
+    <h2>Fontes e código</h2>
+    <p>As séries vêm da CoinMetrics community API, da API de gráficos da blockchain.info e da Alternative.me. O cálculo está no repositório público <a href="https://github.com/victordivalente/estamosnofundo" target="_blank" rel="noopener">github.com/victordivalente/estamosnofundo</a>. Para ver o preço do Bitcoin em um gráfico interativo, use o <a href="https://www.tradingview.com/chart/?symbol=BITSTAMP:BTCUSD" target="_blank" rel="noopener">gráfico BITSTAMP:BTCUSD no TradingView</a>.</p>
+
+    <h2>Aviso</h2>
+    <p>Esta página descreve o método de cálculo do site Estamos No Fundo?. O conteúdo é educacional. Não é recomendação de investimento, tampouco opinião legal ou oferta de serviços.</p>
+
+    <p class="credit">Um Oferecimento De<br><a href="https://www.opensourcelaw.com.br" aria-label="Open-Source Law+"><img src="assets/osl-logo.png" alt="Open-Source Law+" width="120" height="120"></a></p>
+  </div>
+  <p class="cvv">
+    <a href="https://cvv.org.br/chat/" target="_blank" rel="noopener" aria-label="Chat do CVV" title="Chat do CVV">Precisa conversar?</a>
+  </p>
+  <script>
+    (function () {
+      function formatDate(iso) {
+        if (!iso || typeof iso !== "string") return "";
+        var m = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (!m) return iso;
+        return m[3] + "/" + m[2] + "/" + m[1];
+      }
+      fetch("data/latest.json", { cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (!d || !d.indicators) return;
+          var section = document.getElementById("leitura");
+          var meta = document.getElementById("leitura-meta");
+          var list = document.getElementById("leitura-lista");
+          var s = d.summary || {};
+          var ok = typeof s.ok === "number" ? s.ok : 0;
+          var fundo = typeof s.fundo === "number" ? s.fundo : 0;
+          var neutro = typeof s.neutro === "number" ? s.neutro : 0;
+          var topo = typeof s.topo === "number" ? s.topo : 0;
+          var failed = typeof s.failed === "number" ? s.failed : 0;
+          var parts = [];
+          if (d.as_of) {
+            parts.push("Data de referência (as_of): " + formatDate(d.as_of) + " (UTC, última observação diária da CoinMetrics).");
+          }
+          parts.push(fundo + " de " + ok + " indicadores calculados na zona de fundo (neutro: " + neutro + "; topo: " + topo + ").");
+          if (failed) {
+            parts.push(failed + (failed === 1 ? " indicador não pôde ser calculado." : " indicadores não puderam ser calculados."));
+          }
+          if (d.rule && d.rule.need_this_run != null) {
+            parts.push("Nesta atualização, a regra exigiria " + d.rule.need_this_run + " na zona de fundo para responder SIM. A resposta publicada é " + (d.answer || "—") + ".");
+          } else if (d.answer) {
+            parts.push("A resposta publicada é " + d.answer + ".");
+          }
+          meta.textContent = parts.join(" ");
+          list.innerHTML = "";
+          d.indicators.forEach(function (item) {
+            var row = document.createElement("div");
+            row.className = "leitura-item";
+            var name = document.createElement("span");
+            name.className = "nome";
+            name.textContent = item.name || item.id || "Indicador";
+            var valor = document.createElement("span");
+            valor.className = "valor";
+            valor.textContent = item.error ? "sem leitura" : (item.display || "—");
+            var zona = document.createElement("span");
+            zona.className = "zona";
+            zona.textContent = item.error ? "—" : (item.zone || "—");
+            row.appendChild(name);
+            row.appendChild(valor);
+            row.appendChild(zona);
+            list.appendChild(row);
+          });
+          section.hidden = false;
+        })
+        .catch(function () {});
+    })();
+  </script>
+</body>
+</html>
